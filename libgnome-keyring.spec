@@ -1,24 +1,18 @@
 %define lib_major 0
-%define libname %mklibname %{name} %{lib_major}
-%define libnamedev %mklibname -d %{name}
+%define libname %mklibname gnome-keyring %{lib_major}
+%define libnamedev %mklibname -d gnome-keyring
 
-Summary: Keyring and password manager for the GNOME desktop
-Name: gnome-keyring
-Version: 2.28.2
+Summary: Keyring library for the GNOME desktop
+Name: libgnome-keyring
+Version: 2.29.4
 Release: %mkrel 1
-Source0: ftp://ftp.gnome.org/pub/GNOME/sources/gnome-keyring/%{name}-%{version}.tar.bz2
-Patch0: gnome-keyring-2.27.92-fix-linking.patch
+Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%name/%{name}-%{version}.tar.bz2
 URL: http://www.gnome.org/
-License: GPLv2+ and LGPLv2+
+License: LGPLv2+
 Group: Networking/Remote access
 BuildRoot: %{_tmppath}/%{name}-buildroot
-BuildRequires: gtk2-devel >= 2.4.0
-BuildRequires: libGConf2-devel
 BuildRequires: libgcrypt-devel
-BuildRequires: libtasn1-devel
-BuildRequires: dbus-glib-devel
-BuildRequires: pam-devel
-BuildRequires: libtasn1-tools
+BuildRequires: eggdbus-devel
 BuildRequires: intltool
 BuildRequires: gtk-doc
 BuildRequires: libtool
@@ -67,19 +61,9 @@ can be made public for any application to use.
 
 %prep
 %setup -q
-%patch0 -p1 -b .fix-linking
-
-#needed by patch0
-autoreconf -fi
 
 %build
-%configure2_5x --with-pam-dir=/%_lib/security --disable-static \
-  --disable-schemas-install --disable-acl-prompts
-#gw for unstable cooker builds use:
-#--enable-debug
-#--enable-tests
-#or even:
-#--enable-valgrind
+%configure2_5x  --disable-static
 %make
 
 %install
@@ -93,48 +77,22 @@ rm -f %buildroot/%_lib/security/{*.la,*.a} %buildroot%_libdir/*.a
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-%post_install_gconf_schemas %name
-%preun
-%preun_uninstall_gconf_schemas %name
-
-
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
 
-%files -f %{name}.lang
-%defattr(-,root,root)
-%doc README NEWS TODO COPYING
-%_sysconfdir/xdg/autostart/gnome-keyring-daemon.desktop
-%_sysconfdir/gconf/schemas/%name.schemas
-%{_bindir}/gnome-keyring
-%{_bindir}/gnome-keyring-daemon
-%_libexecdir/gnome-keyring-ask
-%_libdir/gnome-keyring/
-/%_lib/security/pam_gnome_keyring*.so
-%_datadir/dbus-1/services/org.gnome.keyring.service
-%_datadir/gcr
-
 %files -n %{libname}
+%doc README NEWS
 %defattr(-,root,root)
 %{_libdir}/libgnome-keyring.so.%{lib_major}*
-%{_libdir}/libgp11.so.%{lib_major}*
-%{_libdir}/libgcr.so.%{lib_major}*
 
 %files -n %{libnamedev}
 %defattr(-,root,root)
-%doc COPYING.LIB ChangeLog
+%doc ChangeLog
 %{_libdir}/libgnome-keyring.so
-%{_libdir}/libgp11.so
-%{_libdir}/libgcr.so
 %attr(644,root,root) %{_libdir}/*.la
 %dir %{_includedir}/gnome-keyring-1/
 %{_includedir}/gnome-keyring-1/*.h
-%{_includedir}/gp11/
-%{_includedir}/gcr
 %{_libdir}/pkgconfig/gnome-keyring-1.pc
-%{_libdir}/pkgconfig/gp11-0.pc
-%{_libdir}/pkgconfig/gcr-0.pc
-%_datadir/gtk-doc/html/*
+%_datadir/gtk-doc/html/gnome-keyring
