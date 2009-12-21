@@ -45,7 +45,6 @@ can be made public for any application to use.
 Group: Development/C
 Summary: Library for integration with the gnome keyring system
 Requires: %{libname} = %{version}
-Provides: lib%{name}-devel = %{version}-%{release}
 Provides: %{name}-devel = %{version}-%{release}
 Obsoletes: %mklibname -d %name 0
 
