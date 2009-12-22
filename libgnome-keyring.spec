@@ -5,7 +5,7 @@
 Summary: Keyring library for the GNOME desktop
 Name: libgnome-keyring
 Version: 2.29.4
-Release: %mkrel 1
+Release: %mkrel 2
 Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%name/%{name}-%{version}.tar.bz2
 URL: http://www.gnome.org/
 License: LGPLv2+
@@ -29,7 +29,7 @@ disk, but forgotten when the session ends.
 %package -n %{libname}
 Group: System/Libraries
 Summary: Library for integration with the gnome keyring system
-Requires: %{name} >= %{version}-%{release}
+Requires: gnome-keyring
 
 %description -n %{libname}
 The library libgnome-keyring is used by applications to integrate with
