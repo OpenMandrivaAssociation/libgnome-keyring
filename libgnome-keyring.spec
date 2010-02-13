@@ -5,8 +5,13 @@
 Summary: Keyring library for the GNOME desktop
 Name: libgnome-keyring
 Version: 2.29.4
-Release: %mkrel 3
+Release: %mkrel 4
 Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%name/%{name}-%{version}.tar.bz2
+# gw fix this bug:
+# https://qa.mandriva.com/show_bug.cgi?id=54291
+# (cannot add account in empathy)
+# https://bugzilla.gnome.org/show_bug.cgi?id=608510
+Patch0: libgnome-keyring-fix-assertation-failure.patch
 URL: http://www.gnome.org/
 License: LGPLv2+
 Group: Networking/Remote access
@@ -62,6 +67,7 @@ can be made public for any application to use.
 
 %prep
 %setup -q
+%apply_patches
 
 %build
 %configure2_5x  --disable-static
