@@ -4,14 +4,9 @@
 
 Summary: Keyring library for the GNOME desktop
 Name: libgnome-keyring
-Version: 2.29.4
-Release: %mkrel 4
+Version: 2.30.0
+Release: %mkrel 1
 Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%name/%{name}-%{version}.tar.bz2
-# gw fix this bug:
-# https://qa.mandriva.com/show_bug.cgi?id=54291
-# (cannot add account in empathy)
-# https://bugzilla.gnome.org/show_bug.cgi?id=608510
-Patch0: libgnome-keyring-fix-assertation-failure.patch
 URL: http://www.gnome.org/
 License: LGPLv2+
 Group: Networking/Remote access
@@ -31,10 +26,17 @@ The program can manage several keyrings, each with its own master
 password, and there is also a session keyring which is never stored to
 disk, but forgotten when the session ends.
 
+%package i18n
+Group: System/Libraries
+Summary: Localization data files for %name
+%description i18n
+This package contains the translations for %name.
+
 %package -n %{libname}
 Group: System/Libraries
 Summary: Library for integration with the gnome keyring system
 Requires: gnome-keyring
+Requires: %name-i18n >= %version-%release
 
 %description -n %{libname}
 The library libgnome-keyring is used by applications to integrate with
@@ -88,6 +90,9 @@ rm -rf $RPM_BUILD_ROOT
 %post -n %{libname} -p /sbin/ldconfig
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
+
+%files i18n -f %name.lang
+
 
 %files -n %{libname}
 %doc README NEWS
