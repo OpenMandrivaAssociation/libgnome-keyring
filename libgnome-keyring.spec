@@ -5,8 +5,10 @@
 Summary: Keyring library for the GNOME desktop
 Name: libgnome-keyring
 Version: 2.30.1
-Release: %mkrel 3
+Release: %mkrel 4
 Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%name/%{name}-%{version}.tar.bz2
+# (fc) 2.30.1-4mdv fix crash in threading (GNOME bug #616512) (GIT)
+Patch0: libgnome-keyring-2.30.1-fix-threading.patch
 URL: http://www.gnome.org/
 License: LGPLv2+
 Group: Networking/Remote access
