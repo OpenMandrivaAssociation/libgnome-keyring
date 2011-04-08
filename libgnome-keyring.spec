@@ -4,7 +4,7 @@
 
 Summary: Keyring library for the GNOME desktop
 Name: libgnome-keyring
-Version: 2.32.0
+Version: 3.0.0
 Release: %mkrel 1
 Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%name/%{name}-%{version}.tar.bz2
 URL: http://www.gnome.org/
@@ -12,10 +12,10 @@ License: LGPLv2+
 Group: Networking/Remote access
 BuildRoot: %{_tmppath}/%{name}-buildroot
 BuildRequires: libgcrypt-devel
-BuildRequires: eggdbus-devel
+BuildRequires: dbus-devel
+BuildRequires: glib2-devel
 BuildRequires: intltool
 BuildRequires: gtk-doc
-BuildRequires: libtool
 
 %description
 gnome-keyring is a program that keep password and other secrets for
