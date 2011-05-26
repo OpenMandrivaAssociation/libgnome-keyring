@@ -4,7 +4,7 @@
 
 Summary: Keyring library for the GNOME desktop
 Name: libgnome-keyring
-Version: 3.0.2
+Version: 3.0.3
 Release: %mkrel 1
 Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%name/%{name}-%{version}.tar.bz2
 URL: http://www.gnome.org/
