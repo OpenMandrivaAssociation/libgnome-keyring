@@ -1,21 +1,21 @@
 %define lib_major 0
 %define libname %mklibname gnome-keyring %{lib_major}
-%define libnamedev %mklibname -d gnome-keyring
+%define develname %mklibname -d gnome-keyring
 
 Summary: Keyring library for the GNOME desktop
 Name: libgnome-keyring
-Version: 3.0.3
-Release: %mkrel 1
-Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%name/%{name}-%{version}.tar.bz2
-URL: http://www.gnome.org/
+Version: 3.2.2
+Release: 1
 License: LGPLv2+
 Group: Networking/Remote access
-BuildRoot: %{_tmppath}/%{name}-buildroot
-BuildRequires: libgcrypt-devel
-BuildRequires: dbus-devel
-BuildRequires: glib2-devel
+URL: http://www.gnome.org/
+Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%{name}/%{name}-%{version}.tar.xz
+
 BuildRequires: intltool
 BuildRequires: gtk-doc
+BuildRequires: libgcrypt-devel
+BuildRequires: pkgconfig(glib-2.0) >= 2.16.0
+BuildRequires: pkgconfig(dbus-1) >= 1.0
 
 %description
 gnome-keyring is a program that keep password and other secrets for
@@ -28,15 +28,15 @@ disk, but forgotten when the session ends.
 
 %package i18n
 Group: System/Libraries
-Summary: Localization data files for %name
+Summary: Localization data files for %{name}
+Requires: %{libname} = %{version}-%{release}
+
 %description i18n
-This package contains the translations for %name.
+This package contains the translations for %{name}.
 
 %package -n %{libname}
 Group: System/Libraries
 Summary: Library for integration with the gnome keyring system
-Requires: gnome-keyring
-Requires: %name-i18n >= %version-%release
 
 %description -n %{libname}
 The library libgnome-keyring is used by applications to integrate with
@@ -48,16 +48,14 @@ gnome-keyring API will turn out useful and good, so that later it
 can be made public for any application to use.
 
 
-%package -n %{libnamedev}
+%package -n %{develname}
 Group: Development/C
 Summary: Library for integration with the gnome keyring system
-Requires: %{libname} = %{version}
+Requires: %{libname} = %{version}-%{release}
 Provides: %{name}-devel = %{version}-%{release}
-Obsoletes: %mklibname -d %name 0
-#gw libtool dep
-Requires: eggdbus-devel
+Obsoletes: %mklibname -d %{name} 0
 
-%description -n %{libnamedev}
+%description -n %{develname}
 The library libgnome-keyring is used by applications to integrate with
 the gnome keyring system. However, at this point the library hasn't been
 tested and used enought to consider the API to be publically
@@ -72,39 +70,29 @@ can be made public for any application to use.
 %apply_patches
 
 %build
-%configure2_5x  --disable-static
+%configure2_5x \
+	--disable-static
+
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 %makeinstall_std
-rm -f %buildroot/%_lib/security/{*.la,*.a} %buildroot%_libdir/*.a
+find %{buildroot} -name "*.la" -exec rm -rf {} \;
+
 %find_lang %{name}
 
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%files i18n -f %name.lang
-
+%files i18n -f %{name}.lang
 
 %files -n %{libname}
 %doc README NEWS
-%defattr(-,root,root)
 %{_libdir}/libgnome-keyring.so.%{lib_major}*
 
-%files -n %{libnamedev}
-%defattr(-,root,root)
+%files -n %{develname}
 %doc ChangeLog
-%{_libdir}/libgnome-keyring.so
-%attr(644,root,root) %{_libdir}/*.la
 %dir %{_includedir}/gnome-keyring-1/
+%{_libdir}/libgnome-keyring.so
 %{_includedir}/gnome-keyring-1/*.h
 %{_libdir}/pkgconfig/gnome-keyring-1.pc
-%_datadir/gtk-doc/html/gnome-keyring
+%{_datadir}/gtk-doc/html/gnome-keyring
+
