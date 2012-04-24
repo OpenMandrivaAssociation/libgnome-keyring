@@ -1,21 +1,26 @@
-%define lib_major 0
-%define libname %mklibname gnome-keyring %{lib_major}
+%define url_ver %(echo %{version} | cut -d. -f1,2)
+
+%define major		0
+%define gir_major	1.0
+%define libname %mklibname gnome-keyring %{major}
+%define girname	%mklibname gnome-keyring-gir %{gir_major}
 %define develname %mklibname -d gnome-keyring
 
 Summary: Keyring library for the GNOME desktop
 Name: libgnome-keyring
-Version: 3.2.2
+Version: 3.4.1
 Release: 1
 License: LGPLv2+
 Group: Networking/Remote access
 URL: http://www.gnome.org/
-Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%{name}/%{name}-%{version}.tar.xz
+Source0: ftp://ftp.gnome.org/pub/GNOME/sources/libgnome-keyring/%{url_ver}/%{name}-%{version}.tar.xz
 
 BuildRequires: intltool
 BuildRequires: gtk-doc
 BuildRequires: libgcrypt-devel
-BuildRequires: pkgconfig(glib-2.0) >= 2.16.0
-BuildRequires: pkgconfig(dbus-1) >= 1.0
+BuildRequires: pkgconfig(dbus-1)
+BuildRequires: pkgconfig(glib-2.0)
+BuildRequires: pkgconfig(gobject-introspection-1.0)
 
 %description
 gnome-keyring is a program that keep password and other secrets for
@@ -29,7 +34,6 @@ disk, but forgotten when the session ends.
 %package i18n
 Group: System/Libraries
 Summary: Localization data files for %{name}
-Requires: %{libname} = %{version}-%{release}
 
 %description i18n
 This package contains the translations for %{name}.
@@ -37,6 +41,7 @@ This package contains the translations for %{name}.
 %package -n %{libname}
 Group: System/Libraries
 Summary: Library for integration with the gnome keyring system
+Requires: %{name}-i18n >= %{version}-%{release}
 
 %description -n %{libname}
 The library libgnome-keyring is used by applications to integrate with
@@ -47,6 +52,12 @@ internal use in the gnome desktop. However, we hope that the
 gnome-keyring API will turn out useful and good, so that later it
 can be made public for any application to use.
 
+%package -n %{girname}
+Summary: GObject Introspection interface description for %{name}
+Group: System/Libraries
+  	 
+%description -n %{girname}
+GObject Introspection interface description for %{name}.
 
 %package -n %{develname}
 Group: Development/C
@@ -64,7 +75,6 @@ internal use in the gnome desktop. However, we hope that the
 gnome-keyring API will turn out useful and good, so that later it
 can be made public for any application to use.
 
-
 %prep
 %setup -q
 %apply_patches
@@ -76,7 +86,6 @@ can be made public for any application to use.
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 find %{buildroot} -name "*.la" -exec rm -rf {} \;
 
@@ -85,14 +94,17 @@ find %{buildroot} -name "*.la" -exec rm -rf {} \;
 %files i18n -f %{name}.lang
 
 %files -n %{libname}
-%doc README NEWS
-%{_libdir}/libgnome-keyring.so.%{lib_major}*
+%{_libdir}/libgnome-keyring.so.%{major}*
+
+%files -n %{girname}
+%{_libdir}/girepository-1.0/GnomeKeyring-%{gir_major}.typelib
 
 %files -n %{develname}
-%doc ChangeLog
+%doc ChangeLog README NEWS
 %dir %{_includedir}/gnome-keyring-1/
-%{_libdir}/libgnome-keyring.so
 %{_includedir}/gnome-keyring-1/*.h
+%{_libdir}/libgnome-keyring.so
 %{_libdir}/pkgconfig/gnome-keyring-1.pc
-%{_datadir}/gtk-doc/html/gnome-keyring
+%doc %{_datadir}/gtk-doc/html/gnome-keyring
+%{_datadir}/gir-1.0/GnomeKeyring-%{gir_major}.gir
 
