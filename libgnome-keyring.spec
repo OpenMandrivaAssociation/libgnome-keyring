@@ -8,7 +8,7 @@
 
 Summary:	Keyring library for the GNOME desktop
 Name:		libgnome-keyring
-Version:	3.6.0
+Version:	3.8.0
 Release:	1
 License:	LGPLv2+
 Group:		Networking/Remote access
