@@ -46,7 +46,7 @@ Requires:	%{name}-i18n >= %{version}-%{release}
 %description -n %{libname}
 The library libgnome-keyring is used by applications to integrate with
 the gnome keyring system. However, at this point the library hasn't been
-tested and used enought to consider the API to be publically
+tested and used enought to consider the API to be publicly
 exposed. Therefore use of libgnome-keyring is at the moment limited to
 internal use in the gnome desktop. However, we hope that the
 gnome-keyring API will turn out useful and good, so that later it
