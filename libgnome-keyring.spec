@@ -8,8 +8,8 @@
 
 Summary:	Keyring library for the GNOME desktop
 Name:		libgnome-keyring
-Version:	3.8.0
-Release:	12
+Version:	3.12.0
+Release:	1
 License:	LGPLv2+
 Group:		Networking/Remote access
 Url:		http://www.gnome.org/
@@ -42,6 +42,7 @@ This package contains the translations for %{name}.
 Group:		System/Libraries
 Summary:	Library for integration with the gnome keyring system
 Requires:	%{name}-i18n >= %{version}-%{release}
+Provides:	libgnome-keyring = %{version}-%{release}
 
 %description -n %{libname}
 The library libgnome-keyring is used by applications to integrate with
@@ -74,7 +75,7 @@ This package contains the development files for %{name}.
 %apply_patches
 
 %build
-%configure2_5x \
+%configure \
 	--disable-static
 
 %make
