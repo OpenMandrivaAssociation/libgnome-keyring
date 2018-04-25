@@ -21,6 +21,7 @@ BuildRequires:	libgcrypt-devel
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
+BuildRequires:	pkgconfig(gpg-error)
 
 %description
 gnome-keyring is a program that keep password and other secrets for
