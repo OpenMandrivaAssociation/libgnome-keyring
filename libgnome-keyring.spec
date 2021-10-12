@@ -9,7 +9,7 @@
 Summary:	Keyring library for the GNOME desktop
 Name:		libgnome-keyring
 Version:	3.12.0
-Release:	4
+Release:	5
 License:	LGPLv2+
 Group:		Networking/Remote access
 Url:		http://www.gnome.org/
@@ -17,7 +17,7 @@ Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/libgnome-keyring/%{url_ver}/%{nam
 
 BuildRequires:	gtk-doc
 BuildRequires:	intltool
-BuildRequires:	libgcrypt-devel
+BuildRequires:	pkgconfig(libgcrypt)
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
@@ -79,10 +79,10 @@ This package contains the development files for %{name}.
 %configure \
 	--disable-static
 
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 %find_lang %{name}
 
