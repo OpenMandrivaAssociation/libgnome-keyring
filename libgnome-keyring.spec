@@ -12,7 +12,7 @@ Version:	3.12.0
 Release:	6
 License:	LGPLv2+
 Group:		Networking/Remote access
-Url:		http://www.gnome.org/
+Url:		https://www.gnome.org/
 Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/libgnome-keyring/%{url_ver}/%{name}-%{version}.tar.xz
 
 BuildRequires:	gtk-doc
